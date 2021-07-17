@@ -1,5 +1,5 @@
 use binance::websockets::*;
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::AtomicBool;
 
 fn main() {
     let keep_running = AtomicBool::new(true);

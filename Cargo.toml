@@ -8,3 +8,4 @@ edition = "2018"
 
 [dependencies]
 binance = { git = "https://github.com/wisespace-io/binance-rs.git" }
+diesel = { version = "1.4.7", features = ["postgres"] }
