@@ -1,5 +1,5 @@
 use bigdecimal::BigDecimal;
-use diesel_citext::sql_types::*;
+use diesel_citext::types::CiString;
 use std::time::SystemTime;
 
 use super::schema::market_tickers;
@@ -7,9 +7,9 @@ use super::schema::market_tickers;
 #[derive(Queryable, Insertable)]
 #[table_name = "market_tickers"]
 pub struct MarketTicker {
-    pub exchange: Citext,
-    pub market_type: Citext,
-    pub symbol: Citext,
+    pub exchange: CiString,
+    pub market_type: CiString,
+    pub symbol: CiString,
     pub price_change: BigDecimal,
     pub price_change_percent: BigDecimal,
     pub average_price: BigDecimal,
