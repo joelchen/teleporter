@@ -1,6 +1,6 @@
 use bigdecimal::BigDecimal;
-use diesel::sql_types::*;
 use diesel_citext::sql_types::*;
+use std::time::SystemTime;
 
 use super::schema::market_tickers;
 
@@ -26,7 +26,7 @@ pub struct MarketTicker {
     pub volume: BigDecimal,
     pub quote_volume: BigDecimal,
     pub num_trades: BigDecimal,
-    pub open_time: Timestamp,
-    pub close_time: Timestamp,
-    pub event_time: Timestamp,
+    pub open_time: SystemTime,
+    pub close_time: SystemTime,
+    pub event_time: SystemTime,
 }
