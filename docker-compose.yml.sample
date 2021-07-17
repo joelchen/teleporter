@@ -1,0 +1,54 @@
+version: '2.4'
+services:
+
+  database:
+    image: library/postgres:13-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5445:5432"
+    environment:
+      POSTGRES_PASSWORD: example
+      POSTGRES_USER: postgres
+      POSTGRES_DB: teleporter_development
+    command: 'postgres -c max_connections=300 -c shared_buffers=1GB'
+    networks:
+      - teleporter_net
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "1"
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./:/app
+      - /app/tmp
+    links:
+      - database
+    environment:
+      DATABASE_URL: postgres://postgres:example@database:5432/teleporter_development
+    ports:
+      - "3000:3000"
+    command: 'cargo run'
+    networks:
+      - teleporter_net
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "1"
+
+volumes:
+  postgres_data:
+networks:
+  teleporter_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.77.0.0/24
