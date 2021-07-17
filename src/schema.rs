@@ -1,4 +1,7 @@
 table! {
+    use diesel::sql_types::*;
+    use diesel_citext::sql_types::*;
+
     market_tickers (id) {
         id -> Uuid,
         exchange -> Citext,
