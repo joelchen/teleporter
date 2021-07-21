@@ -35,15 +35,31 @@ pub struct MarketTicker {
 }
 
 impl Default for MarketTicker {
-    fn default() -> MarketTicker {
+    fn default() -> Self {
         MarketTicker {
+            id: uuid::Uuid::new_v4(),
             exchange: CiString::new(),
             market_type: CiString::new(),
             symbol: CiString::new(),
             open_time: SystemTime::now(),
             close_time: SystemTime::now(),
             event_time: SystemTime::now(),
-            ..Default::default()
+            price_change: BigDecimal::default(),
+            price_change_percent: BigDecimal::default(),
+            average_price: BigDecimal::default(),
+            prev_close: BigDecimal::default(),
+            current_close: BigDecimal::default(),
+            current_close_qty: BigDecimal::default(),
+            best_bid: BigDecimal::default(),
+            best_bit_qty: BigDecimal::default(),
+            best_ask: BigDecimal::default(),
+            best_ask_qty: BigDecimal::default(),
+            open: BigDecimal::default(),
+            high: BigDecimal::default(),
+            low: BigDecimal::default(),
+            volume: BigDecimal::default(),
+            quote_volume: BigDecimal::default(),
+            num_trades: BigDecimal::default(),
         }
     }
 }
