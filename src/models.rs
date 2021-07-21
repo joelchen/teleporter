@@ -4,7 +4,7 @@ use std::time::SystemTime;
 
 use super::schema::market_tickers;
 
-#[derive(Queryable, Insertable)]
+#[derive(Queryable, Insertable, Debug)]
 #[table_name = "market_tickers"]
 pub struct MarketTicker {
     pub exchange: CiString,
@@ -29,4 +29,18 @@ pub struct MarketTicker {
     pub open_time: SystemTime,
     pub close_time: SystemTime,
     pub event_time: SystemTime,
+}
+
+impl Default for MarketTicker {
+    fn default() -> MarketTicker {
+        MarketTicker {
+            exchange: CiString::new(),
+            market_type: CiString::new(),
+            symbol: CiString::new(),
+            open_time: SystemTime::now(),
+            close_time: SystemTime::now(),
+            event_time: SystemTime::now(),
+            ..Default::default()
+        }
+    }
 }
