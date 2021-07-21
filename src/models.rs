@@ -1,4 +1,6 @@
 use bigdecimal::BigDecimal;
+// use diesel::sql_types::*;
+// use diesel::sql_types::Uuid;
 use diesel_citext::types::CiString;
 use std::time::SystemTime;
 
@@ -7,6 +9,7 @@ use super::schema::market_tickers;
 #[derive(Queryable, Insertable, Debug)]
 #[table_name = "market_tickers"]
 pub struct MarketTicker {
+    pub id: uuid::Uuid,
     pub exchange: CiString,
     pub market_type: CiString,
     pub symbol: CiString,
