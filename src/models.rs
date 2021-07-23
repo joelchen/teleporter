@@ -4,7 +4,10 @@ use bigdecimal::BigDecimal;
 use diesel_citext::types::CiString;
 use std::time::SystemTime;
 
+use binance::model::DayTickerEvent;
+
 use super::schema::market_tickers;
+// use serde::{Deserialize, Serialize};
 
 #[derive(Queryable, Insertable, Debug)]
 #[table_name = "market_tickers"]
@@ -60,6 +63,21 @@ impl Default for MarketTicker {
             volume: BigDecimal::default(),
             quote_volume: BigDecimal::default(),
             num_trades: BigDecimal::default(),
+        }
+    }
+}
+
+impl From<DayTickerEvent> for MarketTicker {
+    fn from(event: DayTickerEvent) -> Self {
+        MarketTicker {
+            exchange: CiString::from("binance"),
+            market_type: CiString::from("spot"),
+            symbol: CiString::from(event.symbol),
+            //TODO: continue from here
+            // open_time: SystemTime::dur, earlier)
+            // close_time: SystemTime::from(event.close_time),
+            // event_time: SystemTime::from(event.event_time),
+            ..Default::default()
         }
     }
 }
