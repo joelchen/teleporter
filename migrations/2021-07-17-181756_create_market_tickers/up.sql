@@ -14,7 +14,7 @@ create table market_tickers (
 	current_close numeric not null,
 	current_close_qty numeric not null,
 	best_bid numeric not null,
-	best_bit_qty numeric not null,
+	best_bid_qty numeric not null,
 	best_ask numeric not null,
 	best_ask_qty numeric not null,
 	open  numeric not null,
