@@ -14,7 +14,7 @@ table! {
         current_close -> Numeric,
         current_close_qty -> Numeric,
         best_bid -> Numeric,
-        best_bit_qty -> Numeric,
+        best_bid_qty -> Numeric,
         best_ask -> Numeric,
         best_ask_qty -> Numeric,
         open -> Numeric,
