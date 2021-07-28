@@ -1,13 +1,12 @@
-use bigdecimal::BigDecimal;
-// use diesel::sql_types::*;
-// use diesel::sql_types::Uuid;
-use diesel_citext::types::CiString;
-use std::time::SystemTime;
-
-use binance::model::DayTickerEvent;
-
 use super::schema::market_tickers;
-// use serde::{Deserialize, Serialize};
+use bigdecimal::{BigDecimal, FromPrimitive, Zero};
+use diesel_citext::types::CiString;
+use std::{
+    ops::Sub,
+    str::FromStr,
+    time::{Duration, SystemTime},
+};
+use uuid::Uuid;
 
 #[derive(Queryable, Insertable, Debug)]
 #[table_name = "market_tickers"]
@@ -23,7 +22,7 @@ pub struct MarketTicker {
     pub current_close: BigDecimal,
     pub current_close_qty: BigDecimal,
     pub best_bid: BigDecimal,
-    pub best_bit_qty: BigDecimal,
+    pub best_bid_qty: BigDecimal,
     pub best_ask: BigDecimal,
     pub best_ask_qty: BigDecimal,
     pub open: BigDecimal,
@@ -54,7 +53,7 @@ impl Default for MarketTicker {
             current_close: BigDecimal::default(),
             current_close_qty: BigDecimal::default(),
             best_bid: BigDecimal::default(),
-            best_bit_qty: BigDecimal::default(),
+            best_bid_qty: BigDecimal::default(),
             best_ask: BigDecimal::default(),
             best_ask_qty: BigDecimal::default(),
             open: BigDecimal::default(),
@@ -67,17 +66,81 @@ impl Default for MarketTicker {
     }
 }
 
-impl From<DayTickerEvent> for MarketTicker {
-    fn from(event: DayTickerEvent) -> Self {
+impl From<binance::model::DayTickerEvent> for MarketTicker {
+    fn from(event: binance::model::DayTickerEvent) -> Self {
+        let now = SystemTime::now();
         MarketTicker {
+            id: Uuid::new_v4(),
             exchange: CiString::from("binance"),
             market_type: CiString::from("spot"),
             symbol: CiString::from(event.symbol),
-            //TODO: continue from here
-            // open_time: SystemTime::dur, earlier)
-            // close_time: SystemTime::from(event.close_time),
-            // event_time: SystemTime::from(event.event_time),
-            ..Default::default()
+            price_change: match BigDecimal::from_str(&event.price_change) {
+                Ok(v) => v,
+                Err(why) => panic!("why: {:?}", why),
+            },
+            price_change_percent: match BigDecimal::from_str(&event.price_change_percent) {
+                Ok(v) => v,
+                Err(why) => panic!("why: {:?}", why),
+            },
+            average_price: match BigDecimal::from_str(&event.average_price) {
+                Ok(v) => v,
+                Err(why) => panic!("why: {:?}", why),
+            },
+            prev_close: match BigDecimal::from_str(&event.prev_close) {
+                Ok(v) => v,
+                Err(why) => panic!("why: {:?}", why),
+            },
+            current_close: match BigDecimal::from_str(&event.current_close) {
+                Ok(v) => v,
+                Err(why) => panic!("why: {:?}", why),
+            },
+            current_close_qty: match BigDecimal::from_str(&event.current_close_qty) {
+                Ok(v) => v,
+                Err(why) => panic!("why: {:?}", why),
+            },
+            best_bid: match BigDecimal::from_str(&event.best_bid) {
+                Ok(v) => v,
+                Err(why) => panic!("why: {:?}", why),
+            },
+            best_bid_qty: match BigDecimal::from_str(&event.best_bid_qty) {
+                Ok(v) => v,
+                Err(why) => panic!("why: {:?}", why),
+            },
+            best_ask: match BigDecimal::from_str(&event.best_ask) {
+                Ok(v) => v,
+                Err(why) => panic!("why: {:?}", why),
+            },
+            best_ask_qty: match BigDecimal::from_str(&event.best_ask_qty) {
+                Ok(v) => v,
+                Err(why) => panic!("why: {:?}", why),
+            },
+            open: match BigDecimal::from_str(&event.open) {
+                Ok(v) => v,
+                Err(why) => panic!("why: {:?}", why),
+            },
+            high: match BigDecimal::from_str(&event.high) {
+                Ok(v) => v,
+                Err(why) => panic!("why: {:?}", why),
+            },
+            low: match BigDecimal::from_str(&event.low) {
+                Ok(v) => v,
+                Err(why) => panic!("why: {:?}", why),
+            },
+            volume: match BigDecimal::from_str(&event.volume) {
+                Ok(v) => v,
+                Err(why) => panic!("why: {:?}", why),
+            },
+            quote_volume: match BigDecimal::from_str(&event.quote_volume) {
+                Ok(v) => v,
+                Err(why) => panic!("why: {:?}", why),
+            },
+            num_trades: match BigDecimal::from_u64(event.num_trades) {
+                Some(v) => v,
+                None => BigDecimal::zero(),
+            },
+            open_time: now.sub(Duration::from_micros(event.open_time)),
+            close_time: now.sub(Duration::from_micros(event.close_time)),
+            event_time: now.sub(Duration::from_micros(event.event_time)),
         }
     }
 }
