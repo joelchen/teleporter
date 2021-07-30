@@ -2,7 +2,6 @@ use super::schema::market_tickers;
 use bigdecimal::{BigDecimal, FromPrimitive, Zero};
 use diesel_citext::types::CiString;
 use std::{
-    ops::Sub,
     str::FromStr,
     time::{Duration, SystemTime},
 };
@@ -68,7 +67,6 @@ impl Default for MarketTicker {
 
 impl From<binance::model::DayTickerEvent> for MarketTicker {
     fn from(event: binance::model::DayTickerEvent) -> Self {
-        let now = SystemTime::now();
         MarketTicker {
             id: Uuid::new_v4(),
             exchange: CiString::from("binance"),
@@ -138,9 +136,25 @@ impl From<binance::model::DayTickerEvent> for MarketTicker {
                 Some(v) => v,
                 None => BigDecimal::zero(),
             },
-            open_time: now.sub(Duration::from_micros(event.open_time)),
-            close_time: now.sub(Duration::from_micros(event.close_time)),
-            event_time: now.sub(Duration::from_micros(event.event_time)),
+            open_time: match SystemTime::UNIX_EPOCH
+                .checked_add(Duration::from_millis(event.open_time))
+            {
+                Some(v) => v,
+                None => SystemTime::now(),
+            },
+
+            close_time: match SystemTime::UNIX_EPOCH
+                .checked_add(Duration::from_millis(event.close_time))
+            {
+                Some(v) => v,
+                None => SystemTime::now(),
+            },
+            event_time: match SystemTime::UNIX_EPOCH
+                .checked_add(Duration::from_millis(event.event_time))
+            {
+                Some(v) => v,
+                None => SystemTime::now(),
+            },
         }
     }
 }

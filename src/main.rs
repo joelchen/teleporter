@@ -15,7 +15,8 @@ fn main() {
                     // TODO: finish the trait From
                     let ticker = MarketTicker::from(tick_event);
                     create_market_ticker(&conn, &ticker);
-                    thread::sleep(Duration::from_millis(100))
+                    thread::sleep(Duration::from_millis(100));
+                    println!("created id: {:?}", ticker.id);
                 }
             }
             _ => (),
