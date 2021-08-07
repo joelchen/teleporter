@@ -1,9 +1,29 @@
+use warp::Filter;
+use futures::join;
 use binance::websockets::*;
 use std::{sync::atomic::AtomicBool, thread, time::Duration};
 use teleporter::{create_market_ticker, establish_connection, models::MarketTicker};
 // use teleporter::models::MarketTicker;
 
-fn main() {
+#[tokio::main]
+async fn main() {
+    let httpserver = start_http_server();
+    let websocket = connect_websocket();
+    join!(httpserver, websocket);
+
+}
+
+async fn start_http_server() {
+    println!("Starting http server");
+    let hello = warp::path!("hello" / String)
+        .map(|name| format!("Hello, {}!", name));
+
+    warp::serve(hello)
+        .run(([127, 0, 0, 1], 3000))
+        .await;
+}
+
+async fn connect_websocket() {
     let keep_running = AtomicBool::new(true);
     let agg_trade = format!("!ticker@arr");
     let conn = establish_connection();

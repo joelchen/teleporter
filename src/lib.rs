@@ -1,6 +1,7 @@
 #[macro_use]
 extern crate diesel;
 extern crate bigdecimal;
+//extern crate warp;
 // extern crate uuid;
 
 pub mod models;
