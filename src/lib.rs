@@ -1,12 +1,10 @@
 #[macro_use]
 extern crate diesel;
 extern crate bigdecimal;
-// extern crate uuid;
 
 pub mod models;
 pub mod schema;
 
-// use binance::market;
 use diesel::{pg::upsert::on_constraint, prelude::*};
 use models::MarketTicker;
 use std::env;

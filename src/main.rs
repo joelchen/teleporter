@@ -1,7 +1,6 @@
 use binance::websockets::*;
 use std::{sync::atomic::AtomicBool, thread, time::Duration};
 use teleporter::{create_market_ticker, establish_connection, models::MarketTicker};
-// use teleporter::models::MarketTicker;
 
 fn main() {
     let keep_running = AtomicBool::new(true);
