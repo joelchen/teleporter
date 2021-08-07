@@ -2,14 +2,16 @@ use warp::Filter;
 use binance::websockets::*;
 use std::{sync::atomic::AtomicBool, thread, time::Duration};
 use teleporter::{create_market_ticker, establish_connection, models::MarketTicker};
+use tokio::task;
 // use teleporter::models::MarketTicker;
 
 #[tokio::main]
 async fn main() {
-    let (_httpserver, _websocketclient) = tokio::join!(
-        start_http_server(),
-        start_websocket_client()
-    );
+    let httpserver = task::spawn(start_http_server());
+    let websocketclient= task::spawn(start_websocket_client());
+
+    tokio::join!(httpserver, websocketclient);
+
 
 }
 
