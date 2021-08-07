@@ -12,7 +12,6 @@ fn main() {
         match event {
             WebsocketEvent::DayTickerAll(ticker_events) => {
                 for tick_event in ticker_events {
-                    // TODO: finish the trait From
                     let ticker = MarketTicker::from(tick_event);
                     create_market_ticker(&conn, &ticker);
                     thread::sleep(Duration::from_millis(100));

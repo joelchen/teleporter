@@ -7,7 +7,7 @@ use std::{
 };
 use uuid::Uuid;
 
-#[derive(Queryable, Insertable, Debug)]
+#[derive(Queryable, Insertable, Debug, AsChangeset)]
 #[table_name = "market_tickers"]
 pub struct MarketTicker {
     pub id: uuid::Uuid,

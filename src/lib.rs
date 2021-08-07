@@ -7,7 +7,7 @@ pub mod models;
 pub mod schema;
 
 // use binance::market;
-use diesel::prelude::*;
+use diesel::{pg::upsert::on_constraint, prelude::*};
 use models::MarketTicker;
 use std::env;
 
@@ -22,6 +22,9 @@ pub fn create_market_ticker(conn: &PgConnection, ticker: &MarketTicker) -> Marke
 
     diesel::insert_into(market_tickers::table)
         .values(ticker)
+        .on_conflict(on_constraint("const_uidx_market_tickers_primary"))
+        .do_update()
+        .set(ticker)
         .get_result(conn)
         .expect("Error on saving")
 }
