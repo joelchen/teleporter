@@ -1,25 +1,27 @@
 use warp::Filter;
 use binance::websockets::*;
 use std::{sync::atomic::AtomicBool, thread, time::Duration};
-use teleporter::{create_market_ticker, establish_connection, models::MarketTicker};
+use teleporter::{create_market_ticker, establish_connection, find_market_ticker, models::MarketTicker};
 use tokio::task;
 // use teleporter::models::MarketTicker;
 
 #[tokio::main]
 async fn main() {
-    let httpserver = task::spawn(start_http_server());
-    let websocketclient= task::spawn(start_websocket_client());
+    let _httpserver = task::spawn(start_http_server());
+    let _websocketclient= task::spawn(start_websocket_client());
 
-    tokio::join!(httpserver, websocketclient);
-
-
+    let _ = tokio::join!(_httpserver, _websocketclient);
 }
 
 async fn start_http_server() {
-    let hello = warp::path!("hello" / String)
-        .map(|name| format!("Hello, {}!", name));
+    let market_ticker = warp::path!("ticker" / String / String / String)
+        .map(|exchange, market_type, market| {
+            let conn = establish_connection();
+            let market_ticker = find_market_ticker(&conn, exchange, market_type, market);
+            format!("ticker, {:?}!", market_ticker)
+        });
 
-    warp::serve(hello)
+    warp::serve(market_ticker)
         .run(([127, 0, 0, 1], 3000))
         .await;
 }
