@@ -25,5 +25,12 @@ create table market_tickers (
 	num_trades numeric not null,
 	open_time timestamp not null,
 	close_time timestamp not null,
-	event_time timestamp default now() not null
+	event_time timestamp default now() not null,
+	constraint const_uidx_market_tickers_primary unique(exchange, symbol,	market_type)
+);
+
+create unique index uidx_market_tickers_primary on market_tickers (
+	exchange, 
+	symbol,
+	market_type
 );
