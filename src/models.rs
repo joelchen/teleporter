@@ -1,4 +1,5 @@
 use super::schema::market_tickers;
+use serde::{Deserialize, Serialize};
 use bigdecimal::{BigDecimal, FromPrimitive, Zero};
 use diesel_citext::types::CiString;
 use std::{
@@ -7,7 +8,7 @@ use std::{
 };
 use uuid::Uuid;
 
-#[derive(Queryable, Insertable, Debug, AsChangeset)]
+#[derive(Queryable, Insertable, Debug, AsChangeset, Deserialize, Serialize)]
 #[table_name = "market_tickers"]
 pub struct MarketTicker {
     pub id: uuid::Uuid,

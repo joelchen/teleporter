@@ -10,7 +10,8 @@ pub mod schema;
 // use binance::market;
 use diesel::{pg::upsert::on_constraint, prelude::*};
 use models::MarketTicker;
-use std::env;
+use std::{convert::Infallible, env};
+use warp::{Filter, Reply, http::Result};
 
 pub fn establish_connection() -> PgConnection {
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
