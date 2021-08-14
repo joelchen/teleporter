@@ -56,7 +56,7 @@ pub fn find_market_ticker(
 pub async fn start_http_server() {
     let market_ticker_routes = routes::get_market();
     warp::serve(market_ticker_routes)
-        .run(([127, 0, 0, 1], 3000))
+        .run(([0, 0, 0, 0], 3000))
         .await;
 }
 
