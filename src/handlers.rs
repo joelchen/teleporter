@@ -1,7 +1,7 @@
 use std::convert::Infallible;
 use warp::{self};
 
-use teleporter::{establish_connection, find_market_ticker};
+use super::{establish_connection, find_market_ticker};
 
 pub async fn get_market_ticker(
   exchange: String,

@@ -1,6 +1,5 @@
 use crate::handlers;
 
-use std::convert::Infallible;
 use warp::{self, Filter};
 
 pub fn get_market() -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
