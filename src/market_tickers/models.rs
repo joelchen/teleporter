@@ -76,63 +76,63 @@ impl From<binance::model::DayTickerEvent> for MarketTicker {
             symbol: CiString::from(event.symbol),
             price_change: match BigDecimal::from_str(&event.price_change) {
                 Ok(v) => v,
-                Err(why) => panic!("why: {:?}", why),
+                Err(_) => BigDecimal::zero(),
             },
             price_change_percent: match BigDecimal::from_str(&event.price_change_percent) {
                 Ok(v) => v,
-                Err(why) => panic!("why: {:?}", why),
+                Err(_) => BigDecimal::zero(),
             },
             average_price: match BigDecimal::from_str(&event.average_price) {
                 Ok(v) => v,
-                Err(why) => panic!("why: {:?}", why),
+                Err(_) => BigDecimal::zero(),
             },
             prev_close: match BigDecimal::from_str(&event.prev_close) {
                 Ok(v) => v,
-                Err(why) => panic!("why: {:?}", why),
+                Err(_) => BigDecimal::zero(),
             },
             current_close: match BigDecimal::from_str(&event.current_close) {
                 Ok(v) => v,
-                Err(why) => panic!("why: {:?}", why),
+                Err(_) => BigDecimal::zero(),
             },
             current_close_qty: match BigDecimal::from_str(&event.current_close_qty) {
                 Ok(v) => v,
-                Err(why) => panic!("why: {:?}", why),
+                Err(_) => BigDecimal::zero(),
             },
             best_bid: match BigDecimal::from_str(&event.best_bid) {
                 Ok(v) => v,
-                Err(why) => panic!("why: {:?}", why),
+                Err(_) => BigDecimal::zero(),
             },
             best_bid_qty: match BigDecimal::from_str(&event.best_bid_qty) {
                 Ok(v) => v,
-                Err(why) => panic!("why: {:?}", why),
+                Err(_) => BigDecimal::zero(),
             },
             best_ask: match BigDecimal::from_str(&event.best_ask) {
                 Ok(v) => v,
-                Err(why) => panic!("why: {:?}", why),
+                Err(_) => BigDecimal::zero(),
             },
             best_ask_qty: match BigDecimal::from_str(&event.best_ask_qty) {
                 Ok(v) => v,
-                Err(why) => panic!("why: {:?}", why),
+                Err(_) => BigDecimal::zero(),
             },
             open: match BigDecimal::from_str(&event.open) {
                 Ok(v) => v,
-                Err(why) => panic!("why: {:?}", why),
+                Err(_) => BigDecimal::zero(),
             },
             high: match BigDecimal::from_str(&event.high) {
                 Ok(v) => v,
-                Err(why) => panic!("why: {:?}", why),
+                Err(_) => BigDecimal::zero(),
             },
             low: match BigDecimal::from_str(&event.low) {
                 Ok(v) => v,
-                Err(why) => panic!("why: {:?}", why),
+                Err(_) => BigDecimal::zero(),
             },
             volume: match BigDecimal::from_str(&event.volume) {
                 Ok(v) => v,
-                Err(why) => panic!("why: {:?}", why),
+                Err(_) => BigDecimal::zero(),
             },
             quote_volume: match BigDecimal::from_str(&event.quote_volume) {
                 Ok(v) => v,
-                Err(why) => panic!("why: {:?}", why),
+                Err(_) => BigDecimal::zero(),
             },
             num_trades: match BigDecimal::from_u64(event.num_trades) {
                 Some(v) => v,
