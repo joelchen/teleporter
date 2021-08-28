@@ -1,7 +1,8 @@
 use super::schema::market_tickers;
-use serde::{Deserialize, Serialize};
 use bigdecimal::{BigDecimal, FromPrimitive, Zero};
+use diesel::{pg::upsert::on_constraint, prelude::*};
 use diesel_citext::types::CiString;
+use serde::{Deserialize, Serialize};
 use std::{
     str::FromStr,
     time::{Duration, SystemTime},
@@ -158,4 +159,36 @@ impl From<binance::model::DayTickerEvent> for MarketTicker {
             },
         }
     }
+}
+
+pub fn create_market_ticker(conn: &PgConnection, ticker: &MarketTicker) -> MarketTicker {
+    diesel::insert_into(market_tickers::table)
+        .values(ticker)
+        .on_conflict(on_constraint("const_uidx_market_tickers_primary"))
+        .do_update()
+        .set(ticker)
+        .get_result(conn)
+        .expect("Error on saving")
+}
+
+pub fn find_market_ticker(
+    conn: &PgConnection,
+    arg_exchange: String,
+    arg_market_type: String,
+    arg_symbol: String,
+) -> MarketTicker {
+    use super::schema::market_tickers::dsl::*;
+
+    let result = market_tickers
+        .filter(
+            exchange
+                .eq(CiString::from(arg_exchange))
+                .and(market_type.eq(CiString::from(arg_market_type)))
+                .and(symbol.eq(CiString::from(arg_symbol))),
+        )
+        .limit(1)
+        .first::<MarketTicker>(conn)
+        .expect("Error loading ticker");
+
+    return result;
 }
