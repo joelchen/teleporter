@@ -67,8 +67,8 @@ impl Default for MarketTicker {
     }
 }
 
-impl From<binance::model::DayTickerEvent> for MarketTicker {
-    fn from(event: binance::model::DayTickerEvent) -> Self {
+impl From<binance::ws_model::DayTickerEvent> for MarketTicker {
+    fn from(event: binance::ws_model::DayTickerEvent) -> Self {
         MarketTicker {
             id: Uuid::new_v4(),
             exchange: CiString::from("binance"),
